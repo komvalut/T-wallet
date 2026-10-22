@@ -85,9 +85,12 @@ class WalletLoadingService {
             '[T-Wallet] secure storage entry for "$name" was encrypted by another build; '
             'cleaning it up');
         await _removeWalletQuietly(type, name);
+        // Jump into the recovery flow (catch) which removes further
+        // unrecoverable wallets and opens a healthy one if any is left.
+        throw WalletOpenException("Wallet is null");
       }
 
-      final wallet = await walletService.openWallet(name, walletPassword);
+      final wallet = await walletService.openWallet(name, walletPassword ?? '');
 
       if (type == WalletType.monero) {
         await updateMoneroWalletPassword(wallet);
