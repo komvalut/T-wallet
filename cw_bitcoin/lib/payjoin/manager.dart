@@ -34,7 +34,7 @@ class PayjoinManager {
   static const List<String> ohttpRelayUrls = [
     'https://pj.bobspacebkk.com',
     'https://ohttp.achow101.com',
-    'https://ohttp.cakewallet.com',
+    'https://ohttp.joinmarket.net',
   ];
 
   static String randomOhttpRelayUrl() =>

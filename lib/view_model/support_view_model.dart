@@ -1,4 +1,3 @@
-import 'package:cake_wallet/.secrets.g.dart' as secrets;
 import 'package:cake_wallet/generated/i18n.dart';
 import 'package:cake_wallet/store/app_store.dart';
 import 'package:cake_wallet/view_model/settings/link_list_item.dart';
@@ -18,24 +17,19 @@ abstract class SupportViewModelBase with Store {
           LinkListItem(
               title: 'Email',
               icon: 'assets/images/support_icon.png',
-              linkTitle: 'support@cakewallet.com',
-              link: 'mailto:support@cakewallet.com'),
+              linkTitle: 'support@twallet.app',
+              link: 'mailto:support@twallet.app'),
           LinkListItem(
               title: 'Website',
               icon: 'assets/images/global.png',
-              linkTitle: 'cakewallet.com',
-              link: 'https://cakewallet.com'),
-          LinkListItem(
-              title: 'Forum',
-              icon: 'assets/images/discourse.png',
-              linkTitle: 'forum.cakewallet.com',
-              link: 'https://forum.cakewallet.com'),
+              linkTitle: 'twallet.app',
+              link: 'https://twallet.app'),
           LinkListItem(
               title: 'GitHub',
               icon: 'assets/images/github.png',
               hasIconColor: true,
               linkTitle: S.current.apk_update,
-              link: 'https://github.com/cake-tech/cake_wallet/releases'),
+              link: 'https://github.com/komvalut/cake_wallet/releases'),
           LinkListItem(
               title: 'Discord',
               icon: 'assets/images/discord.png',
@@ -44,13 +38,8 @@ abstract class SupportViewModelBase with Store {
           LinkListItem(
               title: 'Telegram',
               icon: 'assets/images/Telegram.png',
-              linkTitle: 't.me/cakewalletannouncements',
-              link: 'https://t.me/cakewalletannouncements'),
-          LinkListItem(
-              title: 'Telegram Support Bot',
-              icon: 'assets/images/Telegram.png',
-              linkTitle: '@cakewallet_bot',
-              link: 'https://t.me/cakewallet_bot'),
+              linkTitle: 't.me/twallet_announcements',
+              link: 'https://t.me/twallet_announcements'),
           LinkListItem(
               title: 'ChangeNow',
               icon: 'assets/images/change_now.png',
@@ -114,19 +103,16 @@ abstract class SupportViewModelBase with Store {
               link: 'mailto:contact@support.kryptonim.com'),
         ];
 
-  final docsUrl = 'https://docs.cakewallet.com';
+  final docsUrl = 'https://twallet.app';
 
   String fetchUrl({String locale = "en", String authToken = ""}) {
-    var supportUrl =
-        "https://app.chatwoot.com/widget?website_token=${secrets.chatwootWebsiteToken}&locale=${locale}";
-
-    if (authToken.isNotEmpty) supportUrl += "&cw_conversation=$authToken";
-
-    return supportUrl;
+    // T-Wallet: in-app live chat (Cake's Chatwoot instance) is disabled for
+    // infrastructure independence. The support links list is used instead.
+    return "";
   }
 
   String get appVersion =>
-      "${isMoneroOnly ? "Monero.com" : "Cake Wallet"} - ${_appStore.settingsStore.appVersion}";
+      "T-Wallet - ${_appStore.settingsStore.appVersion}";
 
   String get fiatApiMode => _appStore.settingsStore.fiatApiMode.title;
 

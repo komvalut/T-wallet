@@ -1,0 +1,135 @@
+name: T-Wallet Android Release
+
+permissions:
+  contents: read
+
+concurrency:
+  group: twallet-android
+  cancel-in-progress: true
+
+env:
+  # Native dependency cache images (base, monero, torch, zcash, decred, ...).
+  # For the first builds we point at the upstream (cake-tech) registry whose
+  # cached images match this fork byte-for-byte, so the build passes with no
+  # cold-start. Once komvalut's own registry is populated, switch
+  # CW_DOCKER_REGISTRY to ghcr.io/komvalut/cake_wallet.
+  CW_DOCKER_REGISTRY: ghcr.io/cake-tech/cake_wallet
+  CW_DOCKER_USE_CLOUD: "true"
+  FLUTTER_VERSION: "3.41.9"
+  NDK_VERSION: "28.2.13676358"
+
+on:
+  push:
+    branches: [dev, main, master]
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 600
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install Android NDK
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;${NDK_VERSION}"
+
+      - name: Authenticate git for GitHub clones
+        run: |
+          git config --global --unset-all credential.helper || true
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+
+      # Native deps (monero libwallet, decred, zcash, torch, mwebd, bitbox, reown).
+      # `--extract` restores them from cached container images. If the fork's
+      # registry has no images yet and upstream fallback images miss
+      # (deprecated hashes), run `./scripts/android/docker/build.sh` once
+      # locally to populate the fork registry.
+      - name: Extract native dependencies
+        run: ./scripts/android/docker/build.sh --extract
+
+      - name: Configure app (branding + manifest + pubspec)
+        run: |
+          pushd scripts/android
+            source ./app_env.sh twallet
+            ./app_config.sh
+          popd
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build generated code
+        run: ./model_generator.sh
+
+      - name: Generate app secrets
+        # Fresh values are generated on each build (stable values would require
+        # committing/secrets-managing the generated lib/.secrets.g.dart).
+        # NOTE: if you keep backups between releases, set repository secret
+        # TW_SECRETS_FILE (base64 of lib/.secrets.g.dart) and adjust this step
+        # to persist salts/keys instead of regenerating.
+        run: |
+          touch cw_bitcoin/lib/.secrets.g.dart
+          touch cw_evm/lib/.secrets.g.dart
+          touch cw_solana/lib/.secrets.g.dart
+          touch cw_core/lib/.secrets.g.dart
+          touch cw_nano/lib/.secrets.g.dart
+          touch cw_tron/lib/.secrets.g.dart
+          dart run tool/generate_new_secrets.dart
+
+      - name: Generate KeyStore
+        run: |
+          ./scripts/android/generate_dev_keystore.sh android/app/key.jks
+
+      - name: Generate key properties
+        run: |
+          dart run tool/generate_android_key_properties.dart keyAlias=testKey storeFile=key.jks storePassword=hunter1 keyPassword=hunter1
+
+      - name: Generate localization
+        run: dart run tool/generate_localization.dart
+
+      - name: Compile graphics
+        run: ./compile_graphics.sh
+
+      - name: Build APKs
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/${NDK_VERSION}"
+          export ANDROID_NDK="$ANDROID_NDK_HOME"
+          flutter build apk \
+            --dart-define=CI_COMMIT="$(git rev-parse HEAD)" \
+            --dart-define=CI_BRANCH="${GITHUB_REF_NAME}" \
+            --release --split-per-abi
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p twallet-apk
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            src="build/app/outputs/flutter-apk/app-${abi}-release.apk"
+            dst="twallet-apk/T-Wallet-${abi}.apk"
+            if [ -f "$src" ]; then cp "$src" "$dst"; fi
+          done
+          ls -la twallet-apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: T-Wallet-Android-APKs
+          path: twallet-apk/
+
+      - name: Release (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: twallet-apk/T-Wallet-*.apk

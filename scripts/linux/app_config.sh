@@ -1,6 +1,7 @@
 #!/bin/bash
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/functions.sh"
 CAKEWALLET="cakewallet"
+TWALLET="twallet"
 DIR=`pwd`
 
 if [ -z "$APP_LINUX_TYPE" ]; then
@@ -12,6 +13,8 @@ cd ../.. # go to root
 CONFIG_ARGS=""
 
 case $APP_LINUX_TYPE in
+        $TWALLET)
+		CONFIG_ARGS="--monero --bitcoin --ethereum --polygon --nano --bitcoinCash --solana --tron --wownero --dogecoin --base --arbitrum --bsc --robinhood --excludeFlutterSecureStorage";;
         $CAKEWALLET)
 		CONFIG_ARGS="--monero --bitcoin --ethereum --polygon --nano --bitcoinCash --solana --tron --wownero --dogecoin --base --arbitrum --bsc --robinhood --excludeFlutterSecureStorage";;
 esac

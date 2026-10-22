@@ -5,6 +5,9 @@ SRC_DIR_PATH="`pwd`/../../assets/images/ios_icons"
 mkdir -p "$DEST_DIR_PATH"
 
 case $APP_MACOS_TYPE in
+	"twallet")
+    ICON_DIRECTORY="twallet-app.icon"
+    ;;
 	"monero.com")
     ICON_DIRECTORY="monerocom-app.icon"
     ;;

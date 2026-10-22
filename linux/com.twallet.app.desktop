@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=T-Wallet
+Comment=A noncustodial multi-currency wallet
+Categories=Office;Finance;
+Terminal=false
+Icon=com.twallet.app
+Exec=cake_wallet

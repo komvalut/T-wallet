@@ -33,7 +33,7 @@ if [ "$PLATFORM" == "$LINUX" ]; then
     cd scripts/linux
 fi
 
-source ./app_env.sh cakewallet
+source ./app_env.sh twallet
 ./app_config.sh
 echo "flutter pub get may take a while, please wait..."
 cd ../.. && flutter pub get

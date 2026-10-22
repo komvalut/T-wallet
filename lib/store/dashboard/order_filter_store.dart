@@ -9,7 +9,7 @@ part 'order_filter_store.g.dart';
 class OrderFilterStore = OrderFilterStoreBase with _$OrderFilterStore;
 
 abstract class OrderFilterStoreBase with Store {
-  OrderFilterStoreBase() : displayCakePay = true;
+  OrderFilterStoreBase() : displayCakePay = false;
 
   @observable
   bool displayCakePay;

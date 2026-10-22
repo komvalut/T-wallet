@@ -1,4 +1,4 @@
-package com.cakewallet.cake_wallet;
+package com.twallet.app;
 
 import io.flutter.app.FlutterApplication;
 

@@ -78,9 +78,9 @@ flutter build linux
 rm -rf build/linux/current
 cp -r build/linux/$flutter_arch build/linux/current
 rm -rf .flatpak-builder
-flatpak-builder --force-clean flatpak-build com.cakewallet.CakeWallet.yml
+flatpak-builder --force-clean flatpak-build com.twallet.app.yml
 flatpak build-export export flatpak-build
-flatpak build-bundle export build/linux/current/cake_wallet.flatpak com.cakewallet.CakeWallet
+flatpak build-bundle export build/linux/current/cake_wallet.flatpak com.twallet.app
 cp build/linux/current/cake_wallet.flatpak build/linux/$flutter_arch/
 EOF
 }

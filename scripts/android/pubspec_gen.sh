@@ -3,9 +3,13 @@
 MONERO_COM=monero.com
 CAKEWALLET=cakewallet
 HAVEN=haven
+TWALLET=twallet
 CONFIG_ARGS=""
 
 case $APP_ANDROID_TYPE in
+        $TWALLET)
+                CONFIG_ARGS="--monero --bitcoin --ethereum --polygon --nano --bitcoinCash --solana --tron --wownero --zano --decred --dogecoin --base --zcash --arbitrum --bsc --robinhood"
+                ;;
         $MONERO_COM)
                 CONFIG_ARGS="--monero"
                 ;;

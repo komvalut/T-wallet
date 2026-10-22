@@ -1,11 +1,11 @@
-#define MyAppName "Cake Wallet"
+#define MyAppName "T-Wallet"
 #define MyAppVersion "6.5.0"
-#define MyAppPublisher "Cake Labs LLC"
-#define MyAppURL "https://cakewallet.com/"
-#define MyAppExeName "CakeWallet.exe"
+#define MyAppPublisher "T-Wallet"
+#define MyAppURL "https://twallet.app/"
+#define MyAppExeName "TWallet.exe"
 
 [Setup]
-AppId=com.cakewallet.cakewallet
+AppId=com.twallet.app
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -13,7 +13,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\CakeWallet
+DefaultDirName={autopf}\TWallet
 DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE.md
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)

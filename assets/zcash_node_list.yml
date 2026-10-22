@@ -1,17 +1,6 @@
 -
-  uri: zec-node.cakewallet.com:443
+  uri: zec.rocks:443
   isDefault: true
-  isOfficial: true
-  useSSL: true
-  isEnabledForAutoSwitching: true
-  label: "Cake Wallet"
-- uri: zec.rocks:443
-  is_default: true
   useSSL: true
   isEnabledForAutoSwitching: true
   label: "Zec.rocks"
--
-  uri: cakezecgh6enylxz3yya52pu4rq3bojy7zfhvnegqkq4qbbpzderjiqd.onion:9067
-  useSSL: false
-  isOfficial: true
-  label: "Cake Wallet (Tor)"

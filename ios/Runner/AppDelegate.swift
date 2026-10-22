@@ -26,7 +26,7 @@ import Flutter
     let messenger = engineBridge.applicationRegistrar.messenger()
 
       let legacyMigrationChannel = FlutterMethodChannel(
-                name: "com.cakewallet.cakewallet/legacy_wallet_migration",
+                name: "com.twallet.app/legacy_wallet_migration",
                 binaryMessenger: messenger)
             legacyMigrationChannel.setMethodCallHandler({
                 (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in

@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.cakewallet.cake_wallet" "\0"
-            VALUE "FileDescription", "Cake Wallet" "\0"
+            VALUE "CompanyName", "com.twallet.app" "\0"
+            VALUE "FileDescription", "T-Wallet" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Cake Wallet" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 Cake Wallet. All rights reserved." "\0"
-            VALUE "OriginalFilename", "Cake Wallet.exe" "\0"
-            VALUE "ProductName", "Cake Wallet" "\0"
+            VALUE "InternalName", "T-Wallet" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 T-Wallet. All rights reserved." "\0"
+            VALUE "OriginalFilename", "T-Wallet.exe" "\0"
+            VALUE "ProductName", "T-Wallet" "\0"
             VALUE "ProductVersion",  VERSION_AS_STRING "\0"
         END
     END

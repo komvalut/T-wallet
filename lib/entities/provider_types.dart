@@ -46,19 +46,16 @@ extension ProviderTypeName on ProviderType {
 }
 
 class ProvidersHelper {
+  // T-Wallet: providers that route through Cake's exchange-helper.cakewallet.com
+  // proxy (robinhood, onramper, moonpay) are disabled for infrastructure
+  // independence. Only direct-API providers remain enabled.
   static List<ProviderType> getAvailableBuyProviderTypes() => [
-        ProviderType.robinhood,
         ProviderType.dfx,
-        ProviderType.onramper,
-        ProviderType.moonpay,
         ProviderType.kriptonim
       ];
 
   static List<ProviderType> getAvailableSellProviderTypes() => [
-        // ProviderType.robinhood, // ToDo: (Konsti) Enable once fixed in Exchange Helper, but still waiting for new Docs
         ProviderType.dfx,
-        ProviderType.onramper,
-        ProviderType.moonpay,
         ProviderType.kriptonim
       ];
 

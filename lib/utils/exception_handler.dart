@@ -25,7 +25,7 @@ class ExceptionHandler {
   static bool _hasError = false;
   static const _coolDownDurationInDays =
       bool.fromEnvironment('hasDevOptions', defaultValue: kDebugMode || kProfileMode) ? 0 : 7;
-  static const _supportEmail = "support@cakewallet.com";
+  static const _supportEmail = "support@twallet.app";
   static const _reportSubject = "Mobile App Issue";
   static File? _file;
 

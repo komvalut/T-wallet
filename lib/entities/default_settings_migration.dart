@@ -31,14 +31,14 @@ import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cw_core/erc20_token.dart';
 
-const newCakeWalletMoneroUri = 'xmr-node.cakewallet.com:18081';
-const cakeWalletBitcoinElectrumUri = 'electrum.cakewallet.com:50002';
+const newCakeWalletMoneroUri = 'node.sethforprivacy.com:443';
+const cakeWalletBitcoinElectrumUri = 'fulcrum.sethforprivacy.com:50002';
 const cakeWalletSilentPaymentsElectrsUri = 'electrs.cakewallet.com:50001';
-const publicBitcoinTestnetElectrumAddress = 'electrs.cakewallet.com';
-const publicBitcoinTestnetElectrumPort = '50002';
+const publicBitcoinTestnetElectrumAddress = 'electrum.blockstream.info';
+const publicBitcoinTestnetElectrumPort = '60001';
 const publicBitcoinTestnetElectrumUri =
     '$publicBitcoinTestnetElectrumAddress:$publicBitcoinTestnetElectrumPort';
-const cakeWalletLitecoinElectrumUri = 'ltc-electrum.cakewallet.com:50002';
+const cakeWalletLitecoinElectrumUri = 'litecoin.stackwallet.com:20063';
 const havenDefaultNodeUri = 'nodes.havenprotocol.org:443';
 const ethereumDefaultNodeUri = 'ethereum-rpc.publicnode.com';
 const polygonDefaultNodeUri = 'polygon-bor-rpc.publicnode.com';
@@ -47,7 +47,7 @@ const nanoDefaultNodeUri = 'rpc.nano.to';
 const nanoDefaultPowNodeUri = 'rpc.nano.to';
 const solanaDefaultNodeUri = 'solana-mainnet.core.chainstack.com';
 const tronDefaultNodeUri = 'trx.nownodes.io';
-const newCakeWalletBitcoinUri = 'btc-electrum.cakewallet.com:50002';
+const newCakeWalletBitcoinUri = 'fulcrum.sethforprivacy.com:50002';
 const wowneroDefaultNodeUri = 'node3.monerodevs.org:34568';
 const zanoDefaultNodeUri = '37.27.100.59:10500';
 const moneroWorldNodeUri = '.moneroworld.com';
@@ -911,9 +911,9 @@ Future<void> validateBitcoinSavedTransactionPriority(SharedPreferences sharedPre
 Future<void> replaceNodesMigration() async {
   final replaceNodes = <String, Node>{
     'eu-node.cakewallet.io:18081':
-        Node(uri: 'xmr-node-eu.cakewallet.com:18081', type: WalletType.monero),
+        Node(uri: 'node.monerodevs.org:18089', type: WalletType.monero),
     'node.cakewallet.io:18081':
-        Node(uri: 'xmr-node-usa-east.cakewallet.com:18081', type: WalletType.monero),
+        Node(uri: 'node2.monerodevs.org:18089', type: WalletType.monero),
     'node.xmr.ru:13666': Node(uri: 'node.monero.net:18081', type: WalletType.monero)
   };
 
@@ -1236,13 +1236,12 @@ Future<void> migrateExistingNodesToUseAutoSwitching() async {
   final listOfDefaultNodesWithAutoSwitching = [
     'bitcoincash.stackwallet.com:50002',
     'bch.aftrek.org:50002',
-    'btc-electrum.cakewallet.com:50002',
     'fulcrum.sethforprivacy.com:50002',
+    'electrum.blockstream.info:50002',
     'default-spv-nodes',
     'dcrd.sethforprivacy.com:9108',
     'ethereum-rpc.publicnode.com',
     'eth.nownodes.io',
-    'ltc-electrum.cakewallet.com:50002',
     'litecoin.stackwallet.com:20063',
     'nano.nownodes.io',
     'rpc.nano.to',
@@ -1250,8 +1249,12 @@ Future<void> migrateExistingNodesToUseAutoSwitching() async {
     'rpc.nano.to',
     'workers.perish.co',
     'worker.nanoriver.cc',
-    'xmr-node.cakewallet.com:18081',
     'node.sethforprivacy.com:443',
+    'node.monerodevs.org:18089',
+    'node2.monerodevs.org:18089',
+    'node3.monerodevs.org:18089',
+    'xmr.stormycloud.org:18089',
+    'selsta1.featherwallet.net:18081',
     'nodes.hashvault.pro:18081',
     'polygon-bor-rpc.publicnode.com',
     'matic.nownodes.io',
@@ -1262,9 +1265,8 @@ Future<void> migrateExistingNodesToUseAutoSwitching() async {
     'trx.nownodes.io',
     'node3.monerodevs.org:34568',
     'node2.monerodevs.org:34568',
+    'node.monerodevs.org:34568',
     '37.27.100.59:10500',
-    'zano.cakewallet.com:11211',
-    'electrum.cakewallet.com:50002',
   ];
   final nodes = await Node.getAll();
   for (var node in nodes) {

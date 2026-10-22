@@ -3,6 +3,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/functions.sh"
 set -x -e
 MONERO_COM="monero.com"
 CAKEWALLET="cakewallet"
+TWALLET="twallet"
 DIR=`pwd`
 
 if [ -z "$APP_IOS_TYPE" ]; then
@@ -26,6 +27,10 @@ universal_sed "s/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = $AP
 CONFIG_ARGS=""
 
 case $APP_IOS_TYPE in
+    $TWALLET)
+		CONFIG_ARGS="--monero --bitcoin --ethereum --polygon --nano --bitcoinCash --solana --tron --wownero --zano --decred --dogecoin --base --zcash --arbitrum --bsc --robinhood"
+		;;
+
     $MONERO_COM)
 		CONFIG_ARGS="--monero"
 		;;

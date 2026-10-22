@@ -16,6 +16,11 @@ CAKE_ROOT=`pwd`/../../
 BRANCH_NAME=${BRANCH_NAME:-$(git rev-parse --abbrev-ref HEAD)}
 
 case $APP_ANDROID_TYPE in
+	"twallet")
+		APP_LOGO=$ASSETS_DIR/images/twallet/twallet_logo.png
+		ANDROID_ICON=$ASSETS_DIR/images/twallet/twallet_android_icon.png
+		ANDROID_ICON_SET=$ASSETS_DIR/images/twallet/twallet_android_icon
+	;;
 	"monero.com")
 		APP_LOGO=$ASSETS_DIR/images/monero.com_logo.png
 		ANDROID_ICON=$MONERO_COM_PATH

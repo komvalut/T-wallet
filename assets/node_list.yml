@@ -1,37 +1,31 @@
 -
-  label: "Cake Wallet"
-  uri: xmr-node.cakewallet.com:18081
-  isDefault: true
-  isOfficial: true
-  trusted: true
-  useSSL: true
-  isEnabledForAutoSwitching: true
--
-  label: "Cake Wallet (Tor)"
-  uri: cakexmrkbd7ptshw7vfzhzqgg77xgeavdrxm6zbu57lppfkj3fczbrqd.onion:18081
-  isOfficial: true
--
   label: "Seth For Privacy"
   uri: node.sethforprivacy.com:443
+  isDefault: true
   useSSL: true
   isEnabledForAutoSwitching: true
 -
   label: "MoneroDevs"
   uri: node.monerodevs.org:18089
   useSSL: true
+  isEnabledForAutoSwitching: true
 -
   label: "MoneroDevs #2"
   uri: node2.monerodevs.org:18089
   useSSL: true
+  isEnabledForAutoSwitching: true
 -
   label: "MoneroDevs #3"
   uri: node3.monerodevs.org:18089
   useSSL: true
+  isEnabledForAutoSwitching: true
 -
   label: "Feather Wallet"
   uri: selsta1.featherwallet.net:18081
   useSSL: true
+  isEnabledForAutoSwitching: true
 -
   label: "StormyCloud"
   uri: xmr.stormycloud.org:18089
   useSSL: true
+  isEnabledForAutoSwitching: true

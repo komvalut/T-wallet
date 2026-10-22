@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 
-import 'package:cake_wallet/.secrets.g.dart' as secrets;
 import 'package:cake_wallet/bitcoin/bitcoin.dart';
 import 'package:cake_wallet/core/key_service.dart';
 import 'package:cake_wallet/view_model/wallet_account_list/wallet_account_list_view_model.dart';
@@ -1665,50 +1664,13 @@ abstract class DashboardViewModelBase with Store {
   static ServicesResponse? cachedServicesResponse;
 
   Future<ServicesResponse> getServicesStatus() async {
-    if (cachedServicesResponse != null) {
-      return cachedServicesResponse!;
-    }
-    cachedServicesResponse = await _getServicesStatus();
+    cachedServicesResponse = ServicesResponse([], false, '');
     return cachedServicesResponse!;
   }
 
+  @Deprecated('Cake service-api notices intentionally disabled for T-Wallet independence')
   Future<ServicesResponse> _getServicesStatus() async {
-    try {
-      if (isEnabledBulletinAction) {
-        final res = await ProxyWrapper().get(
-          clearnetUri: Uri.https(
-            "service-api.cakewallet.com",
-            "/v1/active-notices",
-            {'key': secrets.fiatApiKey},
-          ),
-          onionUri: Uri.http(
-            "jpirgl4lrwzjgdqj2nsv3g7twhp2efzty5d3cnypktyczzqfc5qcwwyd.onion",
-            "/v1/active-notices",
-            {'key': secrets.fiatApiKey},
-          ),
-        );
-        if (res.statusCode < 200 || res.statusCode >= 300) {
-          throw res.body;
-        }
-
-        final oldSha = sharedPreferences.getString(PreferencesKey.serviceStatusShaKey);
-
-        final hash = await Cryptography.instance.sha256().hash(utf8.encode(res.body));
-        final currentSha = bytesToHex(hash.bytes);
-
-        final hasUpdates = oldSha != currentSha;
-
-        return ServicesResponse.fromJson(
-          json.decode(res.body) as Map<String, dynamic>,
-          hasUpdates,
-          currentSha,
-        );
-      } else {
-        return ServicesResponse([], false, '');
-      }
-    } catch (e) {
-      return ServicesResponse([], false, '');
-    }
+    return ServicesResponse([], false, '');
   }
 
   String getTransactionType(TransactionInfo tx) {

@@ -1,13 +1,6 @@
-import 'dart:io';
-
 import 'package:cake_wallet/generated/i18n.dart';
 import 'package:cake_wallet/new-ui/widgets/apps_widget.dart';
 import 'package:cake_wallet/routes.dart';
-import 'package:cake_wallet/src/widgets/alert_with_one_action.dart';
-import 'package:cake_wallet/src/widgets/cake_image_widget.dart';
-import 'package:cake_wallet/src/widgets/dashboard_card_widget.dart';
-import 'package:cake_wallet/utils/feature_flag.dart';
-import 'package:cake_wallet/utils/show_pop_up.dart';
 import 'package:cake_wallet/view_model/dashboard/dashboard_view_model.dart';
 import 'package:cw_core/utils/print_verbose.dart';
 import 'package:cw_core/wallet_type.dart';
@@ -70,33 +63,6 @@ class CakeFeaturesPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, bottom: 8),
-            child: CakeImageWidget(
-                imageUrl: "assets/new-ui/by-cakelabs.svg",
-                height: 20,
-                color: Theme.of(context).colorScheme.onSurfaceVariant),
-          ),
-        ),
-        AppsWidget(
-          isWide: true,
-          isCake: true,
-          onTap: () => _onCakePayTap(context),
-          title: 'Cake Pay',
-          subTitle: S.of(context).cake_pay_subtitle,
-          image: 'assets/images/cakepay.png',
-        ),
-        AppsWidget(
-          isWide: true,
-          isLink: true,
-          isCake: true,
-          onTap: () => _launchUrl("cupcakewallet.com"),
-          title: "Cupcake",
-          subTitle: "Turn your old phone into your new hardware wallet with our new app",
-          image: 'assets/images/cupcake.png',
-        ),
         AppsWidget(
           isWide: true,
           isLink: true,
@@ -151,35 +117,11 @@ class CakeFeaturesPage extends StatelessWidget {
     );
   }
 
-  void _onCakePayTap(BuildContext context) {
-    if (Platform.isMacOS) {
-      _launchUrl("cakepay.com");
-    } else {
-      _navigatorToGiftCardsPage(context);
-    }
-  }
-
   void _launchUrl(String url) {
     try {
       launchUrl(Uri.parse("https://$url"), mode: LaunchMode.externalApplication);
     } catch (e) {
       printV(e);
-    }
-  }
-
-  void _navigatorToGiftCardsPage(BuildContext context) {
-    if (dashboardViewModel.type == WalletType.haven) {
-      showPopUp<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertWithOneAction(
-                alertTitle: S.of(context).error,
-                alertContent: S.of(context).gift_cards_unavailable,
-                buttonText: S.of(context).ok,
-                buttonAction: () => Navigator.of(context).pop());
-          });
-    } else {
-      Navigator.pushNamed(context, Routes.cakePayCardsPage);
     }
   }
 }

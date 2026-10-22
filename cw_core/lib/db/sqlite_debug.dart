@@ -143,7 +143,7 @@ s: $s
 This is very rare, usually caused by the device killing the app before it finishes writing file.
 Here you can recover the database or recreate it to regain access to your wallets.
 During this process some of the metadata may get lost.
-Please contact support@cakewallet.com if you need any help."""),
+Please contact support@twallet.app if you need any help."""),
       Divider(),
       ..._debugOptions(),
       if (log.isNotEmpty) ...[

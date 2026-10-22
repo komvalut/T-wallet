@@ -53,7 +53,7 @@ class AnyPayApi {
       'Content-Type': contentTypePaymentRequest,
       'X-Paypro-Version': xPayproVersion,
       'Accept': '*/*',
-      'x-wallet': 'cake',
+      'x-wallet': 'twallet',
       'x-wallet-token': anypayToken,
     };
     final body = <String, dynamic>{
@@ -83,7 +83,7 @@ class AnyPayApi {
       'Content-Type': contentTypePayment,
       'X-Paypro-Version': xPayproVersion,
       'Accept': '*/*',
-      'x-wallet': 'cake',
+      'x-wallet': 'twallet',
       'x-wallet-token': anypayToken,
     };
     final body = <String, dynamic>{

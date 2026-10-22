@@ -1015,7 +1015,7 @@ abstract class ElectrumWalletBase
       try {
         final response = await ProxyWrapper()
             .get(
-              clearnetUri: Uri.parse("https://mempool.cakewallet.com/api/v1/fees/recommended"),
+              clearnetUri: Uri.parse("https://mempool.space/api/v1/fees/recommended"),
               onionUri: Uri.parse(
                   "http://cakememcninjdqbaub3tp2iswuigxqtdoevnpgzkolmy4gvhrrsub3yd.onion/api/v1/fees/recommended"),
             )
@@ -2765,7 +2765,7 @@ abstract class ElectrumWalletBase
           final blockHash = await ProxyWrapper()
               .get(
                 clearnetUri: Uri.parse(
-                  "https://mempool.cakewallet.com/api/v1/block-height/$height",
+                  "https://mempool.space/api/v1/block-height/$height",
                 ),
               )
               .timeout(Duration(seconds: 15));
@@ -2776,7 +2776,7 @@ abstract class ElectrumWalletBase
             final blockResponse = await ProxyWrapper()
                 .get(
                   clearnetUri: Uri.parse(
-                    "https://mempool.cakewallet.com/api/v1/block/${blockHash.body}",
+                    "https://mempool.space/api/v1/block/${blockHash.body}",
                   ),
                 )
                 .timeout(Duration(seconds: 15));
@@ -3808,7 +3808,7 @@ abstract class ElectrumWalletBase
         final blockHashResp = await ProxyWrapper()
             .get(
               clearnetUri: Uri.parse(
-                'https://mempool.cakewallet.com/api/v1/block-height/$h',
+                'https://mempool.space/api/v1/block-height/$h',
               ),
             )
             .timeout(const Duration(seconds: 15));
@@ -3821,7 +3821,7 @@ abstract class ElectrumWalletBase
         final blockResp = await ProxyWrapper()
             .get(
               clearnetUri: Uri.parse(
-                'https://mempool.cakewallet.com/api/v1/block/$blockHash',
+                'https://mempool.space/api/v1/block/$blockHash',
               ),
             )
             .timeout(const Duration(seconds: 15));
@@ -4740,7 +4740,7 @@ Future<void> _handleScanSilentPayments(ScanData scanData) async {
   final hasForcedRescanHeights = !shouldUpdateSyncStatus;
   CakeTor.instance = await CakeTorInstance.getInstance();
 
-  var node = scanData.node?.uri ?? Uri.parse("tcp://electrs.cakewallet.com:50001");
+  var node = scanData.node?.uri ?? Uri.parse("tcp://electrum.blockstream.info:50001");
 
   void log(String message, LogLevel level) {
     printV("[Scanning] $message", file: scanData.debugLogPath, level: level);

@@ -111,7 +111,7 @@ class _AboutPageState extends State<AboutPage> {
                     ListItemRegularRow(
                         keyValue: "official website",
                         label: "Official Website",
-                        onTap: () => launchUrl(Uri.https("cakewallet.com"), mode: LaunchMode.externalApplication),
+                        onTap: () => launchUrl(Uri.https("twallet.app"), mode: LaunchMode.externalApplication),
                         trailingIconPath: "assets/new-ui/link_arrow.svg",
                         foregroundColor: Theme.of(context).colorScheme.primary,
                         trailingIconSize: 10),
