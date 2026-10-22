@@ -54,8 +54,18 @@ jobs:
       # needs protoc and Rust Android targets.
       - name: Install protoc
         run: |
-          sudo apt-get update
+          set +e
+          sudo rm -f /etc/apt/sources.list.d/*microsoft* /etc/apt/sources.list.d/*azure* 2>/dev/null
+          sudo apt-get update -qq
           sudo apt-get install -y protobuf-compiler
+          set -e
+          if ! command -v protoc >/dev/null 2>&1; then
+            echo "::warning::apt protoc install failed, downloading official binary"
+            curl -sSL -o /tmp/protoc.zip \
+              https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+            sudo unzip -o -q /tmp/protoc.zip -d /usr/local bin/protoc 'include/*'
+            sudo chmod +x /usr/local/bin/protoc
+          fi
           protoc --version
 
       - uses: dtolnay/rust-toolchain@stable
