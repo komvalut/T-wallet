@@ -112,11 +112,13 @@ jobs:
 
       - name: Generate KeyStore
         run: |
+          # generate_dev_keystore.sh defaults to test@cake_wallet for both
+          # store and key passwords; key.properties below must match it.
           ./scripts/android/generate_dev_keystore.sh android/app/key.jks
 
       - name: Generate key properties
         run: |
-          dart run tool/generate_android_key_properties.dart keyAlias=testKey storeFile=key.jks storePassword=hunter1 keyPassword=hunter1
+          dart run tool/generate_android_key_properties.dart keyAlias=testKey storeFile=key.jks storePassword=test@cake_wallet keyPassword=test@cake_wallet
 
       - name: Generate localization
         run: dart run tool/generate_localization.dart
