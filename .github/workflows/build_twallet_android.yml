@@ -49,6 +49,19 @@ jobs:
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;${NDK_VERSION}"
 
+      # Cargokit builds some Rust-based flutter deps (breez_sdk_spark_flutter /
+      # Lightning) on the runner ("use_precompiled_binaries: false"), which
+      # needs protoc and Rust Android targets.
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+          protoc --version
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+
       - name: Authenticate git for GitHub clones
         run: |
           git config --global --unset-all credential.helper || true
