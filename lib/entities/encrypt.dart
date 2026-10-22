@@ -2,6 +2,19 @@ import 'package:encrypt/encrypt.dart';
 // import 'package:password/password.dart';
 import 'package:cake_wallet/.secrets.g.dart' as secrets;
 
+/// Thrown when previously-stored encrypted data cannot be decrypted because
+/// it was written by an app build with different encryption secrets
+/// (e.g. an app update that regenerated the secrets file).
+class SecretsChangedException implements Exception {
+  SecretsChangedException(this.keyHint);
+
+  final String keyHint;
+
+  @override
+  String toString() =>
+      'SecretsChangedException: stored $keyHint was encrypted by another build (secrets changed)';
+}
+
 String encrypt({required String source, required String key}) {
   final _key = Key.fromUtf8(key);
   final iv = IV.allZerosOfLength(16);
@@ -36,9 +49,13 @@ String encodedPinCode({required String pin}) {
 }
 
 String decodedPinCode({required String pin}) {
-  final decrypted = decrypt(source: pin, key: secrets.key);
+  try {
+    final decrypted = decrypt(source: pin, key: secrets.key);
 
-  return decrypted.substring(secrets.key.length, decrypted.length);
+    return decrypted.substring(secrets.key.length, decrypted.length);
+  } catch (e) {
+    throw SecretsChangedException('pin code');
+  }
 }
 
 String encodeWalletPassword({required String password}) {
@@ -52,5 +69,9 @@ String decodeWalletPassword({required String password}) {
   final source = password;
   final _key = secrets.shortKey + secrets.walletSalt;
 
-  return decrypt(source: source, key: _key);
+  try {
+    return decrypt(source: source, key: _key);
+  } catch (e) {
+    throw SecretsChangedException('wallet password');
+  }
 }

@@ -99,11 +99,9 @@ jobs:
         run: ./model_generator.sh
 
       - name: Generate app secrets
-        # Fresh values are generated on each build (stable values would require
-        # committing/secrets-managing the generated lib/.secrets.g.dart).
-        # NOTE: if you keep backups between releases, set repository secret
-        # TW_SECRETS_FILE (base64 of lib/.secrets.g.dart) and adjust this step
-        # to persist salts/keys instead of regenerating.
+        # Stable repo secret MAIN_SECRETS_FILE (base64 of lib/.secrets.g.dart)
+        # is used when available so encrypted wallet storage SURVIVES app
+        # updates; otherwise fresh random secrets are generated per build.
         run: |
           touch cw_bitcoin/lib/.secrets.g.dart
           touch cw_evm/lib/.secrets.g.dart
@@ -118,7 +116,13 @@ jobs:
           # LSP key for now; Lightning still works via default bootstrap).
           echo "const breezApiKey = '';" >> cw_bitcoin/lib/.secrets.g.dart
 
-          dart run tool/generate_new_secrets.dart
+          if [ -n "${{ secrets.MAIN_SECRETS_FILE }}" ]; then
+            echo "${{ secrets.MAIN_SECRETS_FILE }}" | base64 --decode > lib/.secrets.g.dart
+            echo "Imported STABLE secrets (sha256: $(cat lib/.secrets.g.dart | sha256sum | cut -c1-16)..."
+          else
+            echo "::warning::MAIN_SECRETS_FILE not set — generating fresh random secrets (wallet storage will NOT survive app updates)"
+            dart run tool/generate_new_secrets.dart
+          fi
 
       - name: Generate KeyStore
         run: |

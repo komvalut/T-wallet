@@ -59,8 +59,10 @@ abstract class AuthViewModelBase with Store {
     try {
       isSuccessfulAuthenticated = await _authService.authenticate(password);
     } on PinCodeUnreadableException catch (e, s) {
-      final status = e.keychainStatus == null ? "" : " (OSStatus ${e.keychainStatus})";
-      state = FailureState("${S.current.auth_store_pin_unreadable}$status");
+      // Auth data was fully reset (PIN was undecodable / not present). The
+      // stored message tells the user to restart the app which now boots into
+      // the fresh-start (welcome) flow.
+      state = FailureState(S.current.auth_store_pin_unreadable);
       unawaited(ExceptionHandler.onError(FlutterErrorDetails(exception: e, stack: s)));
       return;
     }

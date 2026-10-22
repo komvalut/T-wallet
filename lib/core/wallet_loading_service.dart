@@ -61,13 +61,32 @@ class WalletLoadingService {
 
   Future<WalletBase> load(WalletType type, String name,
       {String? password, bool isBackground = false}) async {
+    // true when the wallet password could not be decrypted because it was
+    // written by an app build with different secrets (safe storage is stale).
+    bool storageUnrecoverable = false;
     try {
       if (!isBackground) {
         await sharedPreferences.setString(
             PreferencesKey.backgroundSyncLastTrigger(name), DateTime.now().toIso8601String());
       }
       final walletService = walletServiceFactory.call(type);
-      final walletPassword = password ?? (await keyService.getWalletPassword(walletName: name));
+
+      String? walletPassword = password;
+      if (walletPassword == null) {
+        try {
+          walletPassword = await keyService.getWalletPassword(walletName: name);
+        } on WalletPasswordUnrecoverableException {
+          storageUnrecoverable = true;
+        }
+      }
+
+      if (storageUnrecoverable) {
+        printV(
+            '[T-Wallet] secure storage entry for "$name" was encrypted by another build; '
+            'cleaning it up');
+        await _removeWalletQuietly(type, name);
+      }
+
       final wallet = await walletService.openWallet(name, walletPassword);
 
       if (type == WalletType.monero) {
@@ -87,18 +106,20 @@ class WalletLoadingService {
                     seed: error.seed,
                   ));
         }
-      } else {
+      } else if (!storageUnrecoverable) {
         await ExceptionHandler.resetLastPopupDate();
         final isLedgerError = await ExceptionHandler.isLedgerError(error);
         if (isLedgerError || await requireHardwareWalletConnection(type, name)) rethrow;
         await ExceptionHandler.onError(FlutterErrorDetails(exception: error, stack: stack));
       }
 
-      // try fetching the seeds of the corrupted wallet to show it to the user
-      try {
-        corruptedWalletsSeeds += await _getCorruptedWalletSeeds(name, type);
-      } catch (e) {
-        corruptedWalletsSeeds += "\nFailed to fetch $name seeds: $e";
+      if (!storageUnrecoverable) {
+        // try fetching the seeds of the corrupted wallet to show it to the user
+        try {
+          corruptedWalletsSeeds += await _getCorruptedWalletSeeds(name, type);
+        } catch (e) {
+          corruptedWalletsSeeds += "\nFailed to fetch $name seeds: $e";
+        }
       }
 
       // try opening another wallet that is not corrupted to give user access to the app
@@ -106,7 +127,13 @@ class WalletLoadingService {
       for (var walletInfo in await WalletInfo.getAll()) {
         try {
           final walletService = walletServiceFactory.call(walletInfo.type);
-          final walletPassword = await keyService.getWalletPassword(walletName: walletInfo.name);
+          String? walletPassword;
+          try {
+            walletPassword = await keyService.getWalletPassword(walletName: walletInfo.name);
+          } on WalletPasswordUnrecoverableException {
+            await _removeWalletQuietly(walletInfo.type, walletInfo.name);
+            continue;
+          }
           wallet = await walletService.openWallet(walletInfo.name, walletPassword);
 
           if (walletInfo.type == WalletType.monero) {
@@ -131,6 +158,12 @@ class WalletLoadingService {
             corruptedWalletsSeeds += "\nFailed to fetch $name seeds: $e";
           }
         }
+      }
+
+      // if all wallets were unrecoverable (cleaned up) — treat as a fresh start
+      if (storageUnrecoverable && wallet == null) {
+        await _clearCurrentWalletPreferences();
+        throw WalletOpenException("Wallet is null");
       }
 
       // if all user's wallets are corrupted throw exception
@@ -160,6 +193,26 @@ class WalletLoadingService {
       }
       return wallet;
     }
+  }
+
+  /// Removes a wallet (files + WalletInfo row + preference pointers) whose
+  /// password cannot be decrypted anymore, without any user interaction.
+  Future<void> _removeWalletQuietly(WalletType type, String name) async {
+    try {
+      final walletService = walletServiceFactory.call(type);
+      await walletService.remove(name);
+      await keyService.deleteWalletPassword(walletName: name);
+      printV('[T-Wallet] removed unrecoverable wallet "$name" ($type)');
+    } catch (e) {
+      printV('[T-Wallet] failed to remove wallet "$name": $e');
+    }
+  }
+
+  /// Clears current wallet preferences so the app behaves like a fresh
+  /// install when no wallet is left recoverable.
+  Future<void> _clearCurrentWalletPreferences() async {
+    await sharedPreferences.remove(PreferencesKey.currentWalletName);
+    await sharedPreferences.remove(PreferencesKey.currentWalletType);
   }
 
   Future<void> showSeedsPopup(BuildContext context, String message) async {

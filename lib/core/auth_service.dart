@@ -94,7 +94,18 @@ class AuthService with Store {
       throw PinCodeUnreadableException(await keychainReadStatusNative(regularKey));
     }
 
-    final decodedRegularPin = decodedPinCode(pin: encodedRegularPin);
+    final String? decodedRegularPin;
+    try {
+      decodedRegularPin = decodedPinCode(pin: encodedRegularPin);
+    } on SecretsChangedException catch (e) {
+      // The stored PIN was encrypted by another build of the app (secrets
+      // changed on update). It cannot be verified anymore — reset auth data so
+      // the app starts fresh (the wallet was cleaned up by the loading
+      // service) instead of permanently locking the user out.
+      printV('[T-Wallet] $e; resetting authentication data');
+      await resetService.resetAuthenticationData(sharedPreferences);
+      throw PinCodeUnreadableException(null);
+    }
 
     if (decodedRegularPin == pin) {
       return true;
