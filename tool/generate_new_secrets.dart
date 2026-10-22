@@ -8,5 +8,7 @@ Future<void> main(List<String> args) async => generateSecrets(args);
 
 Future<void> generateSecrets(List<String> args) async {
   await generateSecretsConfig(args);
-  await importSecretsConfig();
+  // --keep-main: lib/.secrets.g.dart was imported from stable secrets (e.g. CI
+  // repo secret MAIN_SECRETS_FILE); do not overwrite it with generated randoms.
+  await importSecretsConfig(keepMain: args.contains('--keep-main'));
 }

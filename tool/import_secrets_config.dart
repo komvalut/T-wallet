@@ -22,7 +22,7 @@ const nanoOutputPath = 'cw_nano/lib/.secrets.g.dart';
 
 Future<void> main(List<String> args) async => importSecretsConfig();
 
-Future<void> importSecretsConfig() async {
+Future<void> importSecretsConfig({bool keepMain = false}) async {
   final outputFile = File(outputPath);
   final input = json.decode(File(configPath).readAsStringSync()) as Map<String, dynamic>;
   final output = input.keys.fold('', (String acc, String val) => acc + generateConst(val, input));
@@ -49,11 +49,13 @@ Future<void> importSecretsConfig() async {
   final nanoOutput =
       nanoInput.keys.fold('', (String acc, String val) => acc + generateConst(val, nanoInput));
 
-  if (outputFile.existsSync()) {
-    await outputFile.delete();
-  }
+  if (!keepMain) {
+    if (outputFile.existsSync()) {
+      await outputFile.delete();
+    }
 
-  await outputFile.writeAsString(output);
+    await outputFile.writeAsString(output);
+  }
 
   if (evmChainsOutputFile.existsSync()) {
     await evmChainsOutputFile.delete();

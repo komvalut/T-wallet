@@ -119,6 +119,8 @@ jobs:
           if [ -n "${{ secrets.MAIN_SECRETS_FILE }}" ]; then
             echo "${{ secrets.MAIN_SECRETS_FILE }}" | base64 --decode > lib/.secrets.g.dart
             echo "Imported STABLE secrets (sha256: $(cat lib/.secrets.g.dart | sha256sum | cut -c1-16)..."
+            # still generate EVM/Solana/Tron/Nano sub-configs, but keep the stable main file
+            dart run tool/generate_new_secrets.dart --keep-main
           else
             echo "::warning::MAIN_SECRETS_FILE not set — generating fresh random secrets (wallet storage will NOT survive app updates)"
             dart run tool/generate_new_secrets.dart
