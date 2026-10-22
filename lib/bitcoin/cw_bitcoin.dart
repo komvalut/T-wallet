@@ -889,7 +889,7 @@ class CWBitcoin extends Bitcoin {
     final electrumWallet = wallet as ElectrumWallet;
 
     if (electrumWallet is BitcoinWallet && electrumWallet.lightningWallet != null) {
-      return electrumWallet.lightningWallet!.getBolt11Invoice(amount, "Send to CakeWallet");
+      return electrumWallet.lightningWallet!.getBolt11Invoice(amount, "Send to T-Wallet");
     }
     return null;
   }

@@ -15,11 +15,11 @@ class Setup2FAPage extends BasePage {
   final Setup2FAViewModel setup2FAViewModel;
 
   @override
-  String get title => 'Cake 2FA';
+  String get title => 'T-Wallet 2FA';
 
   @override
   Widget body(BuildContext context) {
-    final cake2FAGuideTitle = 'Cake 2FA Guide';
+    final cake2FAGuideTitle = 'T-Wallet 2FA Guide';
     final cake2FAGuideUri =
         Uri.parse('https://docs.cakewallet.com/features/advanced/authentication/');
     return Column(

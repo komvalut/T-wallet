@@ -256,7 +256,7 @@ abstract class DisplaySettingsViewModelBase with Store {
         return 'assets/new-ui/dark.svg';
       case 'Light Theme':
         return 'assets/new-ui/light.svg';
-      case 'Black Theme (Cake Primary)':
+      case 'Black Theme (T-Wallet Primary)':
       case 'Black Theme (BCH Green)':
       case 'Black Theme (Bitcoin Yellow)':
       case 'Black Theme (Monero Orange)':

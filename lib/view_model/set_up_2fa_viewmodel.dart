@@ -97,7 +97,7 @@ abstract class Setup2FAViewModelBase with Store {
     final _totpSecretKey = Utils.generateRandomBase32SecretKey(16);
 
     totpVersionOneLink =
-        'otpauth://totp/Cake%20Wallet:$deviceName?secret=$_totpSecretKey&issuer=Cake%20Wallet&algorithm=SHA512&digits=8&period=30';
+        'otpauth://totp/T-Wallet:$deviceName?secret=$_totpSecretKey&issuer=T-Wallet&algorithm=SHA512&digits=8&period=30';
 
     setTOTPSecretKey(_totpSecretKey);
   }

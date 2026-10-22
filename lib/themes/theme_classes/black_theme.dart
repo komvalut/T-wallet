@@ -4,7 +4,7 @@ import 'package:cake_wallet/themes/core/custom_theme_colors.dart';
 import 'package:cake_wallet/themes/custom_theme_colors/black_theme_custom_colors.dart';
 
 enum BlackThemeAccentColor implements ThemeAccentColor {
-  cakePrimary(Color(0xFF52B6F0), 'Cake Primary'),
+  cakePrimary(Color(0xFF52B6F0), 'T-Wallet Primary'),
   bchGreen(Color(0xFF44BA52), 'BCH Green'),
   bitcoinYellow(Color(0xFFFFC107), 'Bitcoin Yellow'),
   moneroOrange(Color(0xFFFF6600), 'Monero Orange'),

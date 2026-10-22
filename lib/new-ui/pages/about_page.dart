@@ -14,12 +14,10 @@ import 'package:url_launcher/url_launcher.dart';
 const List<String> aboutPageEasterEggs = [
   "Designed in (S)pain",
   "Proudly managing over 🤷‍♂️ XMR",
-  "The cake is not a lie 🍰",
   "I don’t play soccer because I enjoy the sport. I’m just doing it for kicks.",
   "Markets in red? Big deal.\nWhat color is the grass outside?",
   "Conquered Web3, now working on Web6-7",
   "Proud owner of none of your funds\n(we are not impressed)",
-  "*writing down my seedphrase*\ncake cake cake cake cake cake cake ca...",
   "Don't forget to actually use your crypto to pay for stuff in the real world 🙂",
   "A chain of blocks? That's preposterous!",
   "IOU a hug <3",
@@ -71,7 +69,7 @@ class _AboutPageState extends State<AboutPage> {
                     GestureDetector(
                       onTap: _easterEgg,
                       child: CakeImageWidget(
-                        imageUrl: "assets/new-ui/cake_squircle_icon.svg",
+                        imageUrl: "assets/images/app_logo.png",
                         width: 128,
                         height: 128,
                       ),
@@ -81,7 +79,7 @@ class _AboutPageState extends State<AboutPage> {
                       spacing: 8,
                       children: [
                         Text(
-                          "Cake Wallet",
+                          "T-Wallet",
                           style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
                         ),
                         Text(widget.appVersion,
@@ -117,7 +115,7 @@ class _AboutPageState extends State<AboutPage> {
                         trailingIconSize: 10),
                     ListItemRegularRow(
                         keyValue: "docs",
-                        label: "Cake Docs",
+                        label: "Docs",
                         onTap: () => launchUrl(Uri.https("docs.cakewallet.com"), mode: LaunchMode.externalApplication),
                         trailingIconPath: "assets/new-ui/link_arrow.svg",
                         foregroundColor: Theme.of(context).colorScheme.primary,
@@ -127,21 +125,7 @@ class _AboutPageState extends State<AboutPage> {
                     ListItemRegularRow(
                         keyValue: "gh",
                         label: "GitHub",
-                        onTap: () => launchUrl(Uri.https("github.com", "cake-tech"), mode: LaunchMode.externalApplication),
-                        trailingIconPath: "assets/new-ui/link_arrow.svg",
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        trailingIconSize: 10),
-                    ListItemRegularRow(
-                        keyValue: "twitter",
-                        label: "X (Twitter)",
-                        onTap: () => launchUrl(Uri.https("twitter.com", "cakewallet"), mode: LaunchMode.externalApplication),
-                        trailingIconPath: "assets/new-ui/link_arrow.svg",
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        trailingIconSize: 10),
-                    ListItemRegularRow(
-                        keyValue: "tg",
-                        label: "Telegram",
-                        onTap: () => launchUrl(Uri.https("t.me", "cakewallet"), mode: LaunchMode.externalApplication),
+                        onTap: () => launchUrl(Uri.https("github.com", "komvalut/T-wallet"), mode: LaunchMode.externalApplication),
                         trailingIconPath: "assets/new-ui/link_arrow.svg",
                         foregroundColor: Theme.of(context).colorScheme.primary,
                         trailingIconSize: 10)

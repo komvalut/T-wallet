@@ -261,7 +261,7 @@ abstract class TrezorConnectViewModelBase extends HardwareWalletViewModel with S
       _client = sdk.TrezorClient.getClientForConnection(
         connection,
         _state!,
-        "Cake Wallet",
+        "T-Wallet",
         deviceInfo,
         onPinCode,
       );

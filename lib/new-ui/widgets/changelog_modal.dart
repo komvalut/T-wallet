@@ -150,11 +150,9 @@ class VersionNumberHeader extends StatelessWidget {
             CakeImageWidget(
               imageUrl: isMoneroOnly
                   ? "assets/images/monerocom_logo.svg"
-                  : "assets/images/cake_logo_dark.svg",
+                  : "assets/images/app_logo.png",
               height: 32,
               width: 32,
-              colorFilter:
-                  ColorFilter.mode(Theme.of(context).colorScheme.onSurface, BlendMode.srcIn),
             ),
             Text(
               version,
