@@ -88,6 +88,13 @@ jobs:
           touch cw_core/lib/.secrets.g.dart
           touch cw_nano/lib/.secrets.g.dart
           touch cw_tron/lib/.secrets.g.dart
+
+          # cw_bitcoin secrets are NOT written by import_secrets_config.dart
+          # (upstream injects them manually in CI). breezApiKey is required by
+          # cw_bitcoin/lib/bitcoin_wallet.dart — keep it empty (no Lightning
+          # LSP key for now; Lightning still works via default bootstrap).
+          echo "const breezApiKey = '';" >> cw_bitcoin/lib/.secrets.g.dart
+
           dart run tool/generate_new_secrets.dart
 
       - name: Generate KeyStore
